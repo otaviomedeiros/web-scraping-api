@@ -1,0 +1,18 @@
+redis:
+  image: redis:3.2.0
+  container_name: redis
+  ports:
+    - '6379:6379'
+
+app:
+  build: .
+  container_name: app
+  links:
+    - redis
+  env_file:
+    - .dev.env
+  volumes:
+    - .:/app
+  ports:
+    - '3000:3000'
+  command: bundle exec puma -C config/puma.rb
